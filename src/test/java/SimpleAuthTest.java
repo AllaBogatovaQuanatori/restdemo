@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class SimpleAuthTest extends RestHelper {
 
-    //https://www.instantwebtools.net/secured-fake-rest-api
+    //https://instantwebtools.net/secured-fake-rest-api
     static TestServiceApi testServiceApi;
 
     @BeforeAll
