@@ -1,9 +1,11 @@
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.example.dto.DataItem;
 import org.example.dto.ResponseByIdDto;
 import org.example.dto.Support;
+import org.example.dto.User;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -17,11 +19,21 @@ public class SimpleTest {
     //https://reqres.in/api-docs/
 
     @Test
+    void simpleLogTest() {
+        given().
+                when().
+                get("https://reqres.in/api/users").
+                then().log().ifValidationFails().
+                statusCode(HttpStatus.SC_OK).
+                body("total", is(15));
+    }
+
+    @Test
     void simpleGetTest() {
         given().
                 when().
                 get("https://reqres.in/api/users").
-                then().
+                then().log().all().
                 statusCode(HttpStatus.SC_OK).
                 body("total", is(12));
     }
@@ -29,10 +41,11 @@ public class SimpleTest {
     @Test
     void simpleGetWithLogTest() {
         given().
+                log().uri().
                 when().
                 get("https://reqres.in/api/users").
                 then().
-                log().all().
+                log().body().
                 statusCode(HttpStatus.SC_OK).
                 body("total_pages", is(2));
     }
@@ -47,7 +60,7 @@ public class SimpleTest {
                 extract().response();
 
         JsonPath jsonPath = new JsonPath(response.asString()).setRootPath("data");
-        assertEquals("9", jsonPath.get("id"));
+        assertEquals(2, (Integer) jsonPath.get("id"));
         assertEquals("Janet", jsonPath.get("first_name"));
         assertEquals("Weaver", jsonPath.get("last_name"));
     }
@@ -69,5 +82,51 @@ public class SimpleTest {
         assertThat(responseDto).isEqualTo(response);
     }
 
+    @Test
+    void simplePostTest() {
+        User newUser = User.builder().name("Ben").job("QA").build();
 
+        Response response = given().log().all().
+                contentType(ContentType.JSON).
+                body(newUser).
+                when().
+                post("https://reqres.in/api/users/").
+                then().log().all().
+                statusCode(HttpStatus.SC_CREATED).
+                extract().response();
+
+        String id = response.then().extract().path("id");
+        assertThat(id).isNotNull();
+    }
+
+    @Test
+    void simplePutTest() {
+        int userId = 2;
+
+        User changedUser = User.builder().name("Sam").job("Developer").build();
+
+        Response response = given().log().all().
+                contentType(ContentType.JSON).
+                body(changedUser).
+                when().
+                put("https://reqres.in/api/users/" + userId).
+                then().
+                statusCode(HttpStatus.SC_OK).
+                extract().response();
+
+        assertThat(changedUser.getName()).isEqualTo(response.path("name"));
+        assertThat(changedUser.getJob()).isEqualTo(response.path("job"));
+    }
+
+    @Test
+    void simpleDeleteTest() {
+        int userId = 2;
+
+        given().log().all().
+                contentType(ContentType.JSON).
+                when().
+                delete("https://reqres.in/api/users/" + userId).
+                then().log().all().
+                statusCode(HttpStatus.SC_NO_CONTENT);
+    }
 }

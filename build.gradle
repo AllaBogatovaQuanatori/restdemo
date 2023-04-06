@@ -6,7 +6,7 @@ plugins {
 
 group 'org.example'
 version '1.0-SNAPSHOT'
-def junit = '5.9.0'
+def junit = '5.9.2'
 def log4j = '2.18.0'
 def assertj = '3.23.1'
 def restAssured = '5.3.0'
@@ -26,13 +26,15 @@ dependencies {
     implementation('org.slf4j:slf4j-simple:2.0.4')
     implementation('org.aeonbits.owner:owner:1.0.12')
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation "org.junit.jupiter:junit-jupiter-api:${junit}"
-    implementation "org.junit.jupiter:junit-jupiter-params:${junit}"
     implementation "org.apache.logging.log4j:log4j-core:${log4j}"
     implementation "org.assertj:assertj-core:${assertj}"
 
+    //JUnit
+    implementation "org.junit.jupiter:junit-jupiter:${junit}"
 
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    //implementation "org.junit.jupiter:junit-jupiter-api:${junit}"
+    //implementation "org.junit.jupiter:junit-jupiter-params:${junit}"
+    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 
 }
 
