@@ -30,4 +30,24 @@ public class Config {
     public static UserConfig getUserConfig() {
         return ConfigFactory.create(UserConfig.class);
     }
+
+
+    public static Map<String, String> getTestEnvironment() {
+        String environment = System.getProperty("prop");
+        System.out.println("prop " + environment);
+
+        if (environment == null) {
+            System.setProperty("prop", "t");
+        }
+
+        Map<String, String> apiEnv = new HashMap<>();
+        apiEnv.put("prop", System.getProperty("prop"));
+
+        System.out.println("apiEnv " + apiEnv);
+
+        return apiEnv;
+    }
+    public static ServiceConfig getServiceTestConfig() {
+        return ConfigFactory.create(ServiceConfig.class, getTestEnvironment());
+    }
 }

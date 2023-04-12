@@ -20,6 +20,6 @@ public class AirlineItem {
     @JsonProperty("head_quaters")
     private String headQuaters;
     private String logo;
-    private int id;
+    private Long id;
     private String slogan;
 }

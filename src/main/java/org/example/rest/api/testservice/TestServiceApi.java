@@ -36,7 +36,7 @@ public class TestServiceApi extends RestHelper {
         return postUrlEncoded(ApiServiceEndpoints.GET_TOKEN, formParams);
     }
 
-    @Step("POST v2/airlines - Get all airlines details")
+    @Step("GET v2/airlines - Get all airlines details")
     public Response getAllAirlines() {
         return get(ApiServiceEndpoints.AIRLINES);
     }

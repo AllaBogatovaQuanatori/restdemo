@@ -1,4 +1,7 @@
+import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.SoftAssertions;
@@ -9,8 +12,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 
 @Slf4j
 public class SimpleAuthTest extends RestHelper {
@@ -48,12 +54,12 @@ public class SimpleAuthTest extends RestHelper {
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(response.getId()).as("id").isEqualTo(1);
         softly.assertThat(response.getName()).as("name").isEqualTo("Quatar Airways");
-        softly.assertThat(response.getCountry()).as("country").isEqualTo("Quatar");
+        softly.assertThat(response.getCountry()).as("country").isEqualTo("Russia");
         softly.assertThat(response.getLogo()).isNotEmpty();
         softly.assertThat(response.getSlogan()).as("slogan").isEqualTo("Going Places Together");
         softly.assertThat(response.getHeadQuaters()).as("head_quaters").isEqualTo("Qatar Airways Towers, Doha, Qatar");
         softly.assertThat(response.getWebsite()).isNotEmpty();
-        softly.assertThat(response.getEstablished()).isEqualTo("1994");
+        softly.assertThat(response.getEstablished()).isEqualTo("1999");
         softly.assertAll();
     }
 

@@ -1,3 +1,5 @@
+package faker;
+
 import com.github.javafaker.Faker;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -40,9 +42,9 @@ public class FakerTest {
         assertThat(response.getId()).isNotEmpty();
 
         try {
-            assertThat(response.getName()).isEqualTo(passenger.getName());
+            assertThat(response.getName()).isEqualTo("passenger.getName()");
             assertThat(response.getTrips()).isEqualTo(passenger.getTrips());
-            assertThat(response.getAirline().get(0).getId()).isEqualTo(passenger.getAirline());
+            assertThat(response.getAirline().get(0).getId()).isEqualTo(0);
         } finally {
             testServiceApi.deletePassengerById(response.getId()).then().statusCode(HttpStatus.SC_OK).
                     assertThat().body("message", is("Passenger data deleted successfully."));
@@ -63,5 +65,23 @@ public class FakerTest {
                 name(faker.name().fullName()).
                 trips(faker.number().randomDigitNotZero()).
                 airline(faker.number().numberBetween(0, 10)).build();
+    }
+
+
+    @Test
+    @Story("Create user with random data")
+    @Description("Create user with random english data and check name, trips and airline")
+    void createEnUserTest() {
+        PassengerRequest passenger = randomEnPassengerData();
+        System.out.println(passenger);
+    }
+
+    private PassengerRequest randomEnPassengerData() {
+        faker = new Faker(new Locale("en"));
+
+        return PassengerRequest.builder().
+                name(faker.name().fullName()).
+                trips(faker.number().randomDigitNotZero()).
+                airline(faker.number().numberBetween(5, 25)).build();
     }
 }

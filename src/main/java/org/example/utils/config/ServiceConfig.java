@@ -17,5 +17,7 @@ public interface ServiceConfig extends Config {
 
     @Key("client_id")
     String clientId();
+    @Key("api_${prop}_test_url")
+    String apiTestUrl();
 
 }
